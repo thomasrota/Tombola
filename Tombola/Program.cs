@@ -11,7 +11,7 @@ namespace Tombola
         static void Main(string[] args)
         {
             // Crea una lista per memorizzare i numeri estratti
-            List<int> estratti = new List<int>();
+            List<int> nestratti = new List<int>();
 
             // Dichiarazione matrice
             int[,] tabellone = new int[9, 10];
@@ -41,9 +41,9 @@ namespace Tombola
                 }
             }
             // Chiama la funzione per estrarre e visualizzare il numero
-            EstraiNumero(estratti);
+            EstraiNumero(nestratti);
         }
-        static void EstraiNumero(List<int> estratti)
+        static void EstraiNumero(List<int> nestratti)
         {
             // Genera un numero casuale finché non viene estratto un numero che non è stato ancora estratto
             Random random = new Random();
@@ -51,10 +51,10 @@ namespace Tombola
             do
             {
                 numeroEstratto = random.Next(1, 91);
-            } while (estratti.Contains(numeroEstratto));
+            } while (nestratti.Contains(numeroEstratto));
 
             // Aggiungi il numero estratto alla lista estratti
-            estratti.Add(numeroEstratto);
+            nestratti.Add(numeroEstratto);
 
             // Visualizza il numero estratto a destra del tabellone
             Console.SetCursorPosition(45, 0);
