@@ -42,7 +42,7 @@ namespace Tombola
             }
 
             // Chiama la funzione per estrarre e visualizzare il numero
-            
+            EstraiNumero(nestratti, tabellone);
 
             // Chiama la funzione per generare e stampare le cartelle
             GeneraCartelle();
@@ -83,40 +83,41 @@ namespace Tombola
                     }
                 }
             }
+            Console.ResetColor(); // Resetta il colore
         }
         static void GeneraCartelle()
         {
             Random random = new Random();
-            int[,] cartella = new int[3, 5];
-            int[,] cartella2 = new int[3, 5];
+            int[,] cartella = new int[3, 5]; // Variabile tipo matrice cartella 1
+            int[,] cartella2 = new int[3, 5]; // Variabile tipo matrice cartella 2
             int righe = 3, colonne = 5;
-            int x = 2, y = 22, x2 = 22, y2 = 22;
+            int x = 2, y = 22, x2 = 22, y2 = 22; // Variabili per le coordinate delle cartelle
 
-            // stampa cartella 1
-            Console.SetCursorPosition(2, 20);
+            // Stampa cartella 1
+            Console.SetCursorPosition(2, 20); // Posiziona cartella 1 sotto il tabellone
             Console.WriteLine("Cartella 1");
             for (int i = 0; i < righe; i++)
             {
                 Console.SetCursorPosition(x, y);
                 for (int j = 0; j < colonne; j++)
                 {
-                    cartella[i, j] = random.Next(1, 91);
-                    Console.Write(cartella[i, j] + " ");
+                    cartella[i, j] = random.Next(1, 91); // Genera numeri randomici della cartella
+                    Console.Write(cartella[i, j] + " "); // Stampa il contenuto della riga della cartella
                 }
                 Console.WriteLine();
                 y++;
             }
 
-            // stampa cartella 2
-            Console.SetCursorPosition(22, 20);
+            // Stampa cartella 2
+            Console.SetCursorPosition(22, 20); // Posiziona cartella 2 accanto alla cartella 1
             Console.WriteLine("Cartella 2");
             for (int i = 0; i < righe; i++)
             {
-                Console.SetCursorPosition(x2, y2);
+                Console.SetCursorPosition(x2, y2); // Posizona i numeri contenuti nelle cartelle
                 for (int j = 0; j < colonne; j++)
                 {
-                    cartella2[i, j] = random.Next(1, 91);
-                    Console.Write(cartella2[i, j] + " ");
+                    cartella2[i, j] = random.Next(1, 91); // Genera numeri randomici della cartella
+                    Console.Write(cartella2[i, j] + " "); // Stampa il contenuto della riga della cartella
                 }
                 Console.WriteLine();
                 y2++;
