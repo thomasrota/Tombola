@@ -10,12 +10,12 @@ namespace Tombola
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             Random r = new Random();
             int[,] cartella1 = new int[3, 5]; // Variabile tipo matrice cartella 1
             int[,] cartella2 = new int[3, 5]; // Variabile tipo matrice cartella 2
             int righe = 3, colonne = 5;
             int cx1 = 2, cy1 = 22, cx2 = 22, cy2 = 22; // Variabili per le coordinate delle cartelle
-
 
             // Crea una lista per memorizzare i numeri estratti
             List<int> nestratti = new List<int>();
@@ -33,7 +33,7 @@ namespace Tombola
             }
 
             // Stampa del tabellone
-            Console.SetCursorPosition(1,0);
+            Console.SetCursorPosition(1, 0);
             Console.WriteLine("Tabellone:");
             Console.WriteLine("");
             for (int i = 0; i < 9; i++)
@@ -49,38 +49,45 @@ namespace Tombola
                 }
             }
 
-            // Genera un numero casuale finché non viene estratto un numero che non è stato ancora estratto
-            Random random = new Random();
-            int numeroEstratto;
-            do
-            {
-                numeroEstratto = random.Next(1, 91);
-            } while (nestratti.Contains(numeroEstratto));
-
-            // Aggiungi il numero estratto alla lista estratti
-            nestratti.Add(numeroEstratto);
-
             // Visualizza il numero estratto a destra del tabellone
             Console.SetCursorPosition(45, 0);
             Console.WriteLine("Numero estratto:");
-            Console.SetCursorPosition(45, 1);
-            Console.WriteLine(numeroEstratto);
-
-            // Chiama la funzione per estrarre e visualizzare il numero e colorare il numero sul tabellone corrispondente di rosso
-            EstraiNumero(tabellone, numeroEstratto);
 
             // Chiama la funzione per generare e stampare le cartelle
             GeneraCartelle(cartella1, cartella2, righe, colonne, cx1, cy1, cx2, cy2);
 
-            // Chiama la funzione per colorare di verde il numero della cartella 1 corrispondente a quello estratto
-            ColoraNumeroEstrattoCartella1(numeroEstratto, cartella1, 2, 22);
+            for (int v = 0; v < 90; v++)
+            {
+                // Genera un numero casuale finché non viene estratto un numero che non è stato ancora estratto
+                Random random = new Random();
+                int numeroEstratto;
+                do
+                {
+                    Thread.Sleep(1250);
+                    numeroEstratto = random.Next(1, 91);
+                } while (nestratti.Contains(numeroEstratto));
 
-            // Chiama la funzione per colorare di verde il numero della cartella 2 corrispondente a quello estratto
-            ColoraNumeroEstrattoCartella2(numeroEstratto, cartella2, 22, 22);
+                // Aggiungi il numero estratto alla lista estratti
+                nestratti.Add(numeroEstratto);
 
+                Console.SetCursorPosition(45, 1);
+                Console.WriteLine(numeroEstratto);
+
+                // Chiama la funzione per colorare il numero sul tabellone corrispondente di rosso
+                ColoraTabellone(tabellone, numeroEstratto);
+
+
+                // Chiama la funzione per colorare di verde il numero della cartella 1 corrispondente a quello estratto
+                ColoraNumeroEstrattoCartella1(numeroEstratto, cartella1, 2, 22);
+
+                // Chiama la funzione per colorare di verde il numero della cartella 2 corrispondente a quello estratto
+                ColoraNumeroEstrattoCartella2(numeroEstratto, cartella2, 22, 22);
+
+                // Chiama la funzione per verificare chi ha vinto
+                Vincitore(numeroEstratto);
+            }
         }
-
-        static void EstraiNumero(int[,] tabellone, int numeroEstratto)
+        static void ColoraTabellone(int[,] tabellone, int numeroEstratto)
         {
             // Cambia il colore del numero estratto nel tabellone
             Console.ForegroundColor = ConsoleColor.Red;
@@ -101,6 +108,8 @@ namespace Tombola
             }
             Console.ResetColor();
         }
+        static List<int> cartella1_numbers = new List<int>();
+        static List<int> cartella2_numbers = new List<int>();
         static void GeneraCartelle(int[,] cartella1, int[,] cartella2, int righe, int colonne, int cx1, int cy1, int cx2, int cy2)
         {
             Random random = new Random();
@@ -113,6 +122,7 @@ namespace Tombola
                 for (int j = 0; j < colonne; j++)
                 {
                     cartella1[i, j] = random.Next(1, 91); // Genera numeri randomici della cartella
+                    cartella1_numbers.Add(cartella1[i, j]);
                     Console.Write(cartella1[i, j] + " "); // Stampa il contenuto della riga della cartella
                 }
                 Console.WriteLine();
@@ -128,6 +138,7 @@ namespace Tombola
                 for (int j = 0; j < colonne; j++)
                 {
                     cartella2[i, j] = random.Next(1, 91); // Genera numeri randomici della cartella
+                    cartella2_numbers.Add(cartella2[i, j]); 
                     Console.Write(cartella2[i, j] + " "); // Stampa il contenuto della riga della cartella
                 }
                 Console.WriteLine();
@@ -143,16 +154,14 @@ namespace Tombola
                 for (int j = 0; j < colonne; j++)
                 {
                     if (cartella1[i, j] == numeroEstratto)
-                    { 
+                    {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(numeroEstratto);
-                        
                     }
                 }
                 Console.WriteLine();
                 cy1++;
             }
-            Console.ResetColor();
         }
         static void ColoraNumeroEstrattoCartella2(int numeroEstratto, int[,] cartella2, int cx2, int cy2)
         {
@@ -166,11 +175,24 @@ namespace Tombola
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(numeroEstratto);
-                        Console.ResetColor();
                     }
                 }
                 Console.WriteLine();
                 cy2++;
+            }
+            Console.ResetColor();
+        }
+        static void Vincitore(int numeroEstratto)
+        {
+            cartella1_numbers.Remove(numeroEstratto);
+            if (cartella1_numbers.Count == 0)
+            {
+                Console.WriteLine("Giocatore 1 ha vinto!");
+            }
+            cartella2_numbers.Remove(numeroEstratto);
+            if (cartella2_numbers.Count == 0)
+            {
+                Console.WriteLine("Giocatore 2 ha vinto!");
             }
         }
     }
