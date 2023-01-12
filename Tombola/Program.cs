@@ -10,8 +10,8 @@ namespace Tombola
     {
         static void Main(string[] args)
         {
-            Console.CursorVisible = false;
-            Random r = new Random();
+            Console.CursorVisible = false; // Nascondi cursore
+
             int[,] cartella1 = new int[3, 5]; // Variabile tipo matrice cartella 1
             int[,] cartella2 = new int[3, 5]; // Variabile tipo matrice cartella 2
             int righe = 3, colonne = 5;
@@ -63,19 +63,18 @@ namespace Tombola
                 int numeroEstratto;
                 do
                 {
-                    Thread.Sleep(1250);
+                    Thread.Sleep(12);
                     numeroEstratto = random.Next(1, 91);
                 } while (nestratti.Contains(numeroEstratto));
 
                 // Aggiungi il numero estratto alla lista estratti
                 nestratti.Add(numeroEstratto);
 
-                Console.SetCursorPosition(45, 1);
-                Console.WriteLine(numeroEstratto);
+                Console.SetCursorPosition(45, 1); // Posiziona cursore a 45, 1
+                Console.WriteLine(numeroEstratto); // Stampa variabile numeroEstratto
 
                 // Chiama la funzione per colorare il numero sul tabellone corrispondente di rosso
                 ColoraTabellone(tabellone, numeroEstratto);
-
 
                 // Chiama la funzione per colorare di verde il numero della cartella 1 corrispondente a quello estratto
                 ColoraNumeroEstrattoCartella1(numeroEstratto, cartella1, 2, 22);
@@ -138,7 +137,7 @@ namespace Tombola
                 for (int j = 0; j < colonne; j++)
                 {
                     cartella2[i, j] = random.Next(1, 91); // Genera numeri randomici della cartella
-                    cartella2_numbers.Add(cartella2[i, j]); 
+                    cartella2_numbers.Add(cartella2[i, j]);
                     Console.Write(cartella2[i, j] + " "); // Stampa il contenuto della riga della cartella
                 }
                 Console.WriteLine();
@@ -184,15 +183,25 @@ namespace Tombola
         }
         static void Vincitore(int numeroEstratto)
         {
-            cartella1_numbers.Remove(numeroEstratto);
-            if (cartella1_numbers.Count == 0)
+            if (cartella1_numbers.Contains(numeroEstratto))
             {
-                Console.WriteLine("Giocatore 1 ha vinto!");
+                cartella1_numbers.Remove(numeroEstratto);
+                if (cartella1_numbers.Count == 0)
+                {
+                    Console.SetCursorPosition(2, 26);
+                    Console.WriteLine("Giocatore 1 ha vinto!");
+                    Environment.Exit(1);
+                }
             }
-            cartella2_numbers.Remove(numeroEstratto);
-            if (cartella2_numbers.Count == 0)
+            if (cartella2_numbers.Contains(numeroEstratto))
             {
-                Console.WriteLine("Giocatore 2 ha vinto!");
+                cartella2_numbers.Remove(numeroEstratto);
+                if (cartella2_numbers.Count == 0)
+                {
+                    Console.SetCursorPosition(2, 26);
+                    Console.WriteLine("Giocatore 2 ha vinto!");
+                    Environment.Exit(1);
+                }
             }
         }
     }
